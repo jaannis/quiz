@@ -10,6 +10,10 @@ class UserRepository
     private $users = [];
     private $idCounter = 0;
 
+    /**
+     * @param UserModel $user
+     * @return UserModel
+     */
     public function saveOrCreate(UserModel $user): UserModel
     {
         $existingUser = $this->getById($user->id);
@@ -23,6 +27,10 @@ class UserRepository
 
     }
 
+    /**
+     * @param int $userId
+     * @return UserModel
+     */
     public function getById(int $userId): UserModel
     {
         if (isset($this->users[$userId])) {
@@ -32,6 +40,9 @@ class UserRepository
 
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         return $this->users;

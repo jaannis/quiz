@@ -8,11 +8,20 @@ class UserAnswerRepository
 {
     private $answers = [];
 
+    /**
+     * @param UserAnswerModel $answer
+     * @return UserAnswerModel
+     */
     public function saveAnswer(UserAnswerModel $answer)
     {
         return $this->answers[] = $answer;
     }
 
+    /**
+     * @param int $userId
+     * @param int $quizId
+     * @return array
+     */
     public function getAnswers(int $userId, int $quizId): array
     {
         $results = [];
