@@ -131,7 +131,6 @@ class QuizService
     /**
      * Get score in the quiz in percentage round(right answers / answer count * 100)
      *
-     * @param QuizAnswerModel $quizAnswerModelModel
      * @param int $userId
      * @param int $quizId
      * @return int 0-100
@@ -139,12 +138,12 @@ class QuizService
     public function getScore(int $userId, int $quizId): int
     {
         $quizAnswerModelModel = new QuizAnswerModel;
-        $score       = 0;
-        $userAnswers = $this->userAnswers->getAnswers($userId, $quizId);
+        $score                = 0;
+        $userAnswers          = $this->userAnswers->getAnswers($userId, $quizId);
         foreach ($userAnswers as $answer) {
             if ($answer->answerId == $quizAnswerModelModel->id) {
                 if ($quizAnswerModelModel->isCorrect) {
-                    $score++;
+                    $score = $score + 1;
                 }
             }
         }
