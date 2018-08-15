@@ -61,19 +61,11 @@ class QuizRepository
      */
     public function getAnswers(int $questionId): array
     {
-//        $model             = new QuizAnswerModel;
-//        $model->id         = '1';
-//        $model->answer     = 'Cats';
-//        $model->questionId = '2';
-//        $model->isCorrect  = '1';
-//        $answers = [];
-//        $answers[]=$model;
         $answers = [];
-//        var_dump($answers);
-//        die;
+
         foreach ($this->answers as $answer) {
             if ($answer->questionId == $questionId) {
-                $answers[] = $answers;
+                $answers[] = $answer;
             }
         }
 
@@ -102,8 +94,8 @@ class QuizRepository
     public function getList(): array
     {
         $quizNames = [];
-        foreach ($this->quizes as $quize) {
-            $quizNames[] = $quize->name;
+        foreach ($this->quizes as $quiz) {
+            $quizNames[] = $quiz->name;
         }
 
         return $quizNames;

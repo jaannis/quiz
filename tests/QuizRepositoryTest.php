@@ -34,10 +34,8 @@ class QuizRepositoryTest extends TestCase
         $model->isCorrect  = '1';
         $repo->addAnswers($model);
         $getAnswers = $repo->getAnswers($model->questionId);
-        $getAnswers = array_shift($getAnswers);
-        var_dump($model, $getAnswers);
-
-        self::assertEquals($model, $getAnswers);
+        $answer     = array_shift($getAnswers);
+        self::assertEquals($model, $answer);
 
     }
 

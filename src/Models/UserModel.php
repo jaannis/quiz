@@ -26,4 +26,9 @@ class UserModel
         return $this->id == 0;
     }
 
+    public function exists(): bool
+    {
+        return !$this->isNew();
+    }
+
 }

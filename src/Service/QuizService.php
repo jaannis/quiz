@@ -62,21 +62,24 @@ class QuizService
      */
     public function isExistingUser($userId): bool
     {
-        // TODO implement
+        $existingUser = $this->users->getById($userId);
+        if ($existingUser->isNew()) {
+            return true;
+        };
+
+        return false;
     }
 
     /**
      * Get list of questions for a specific quiz
      *
-     * @param QuizRepository $questions
      * @param int $quizId
      * @return QuestionModel[]
      */
 
-    public function getQuestions(QuizRepository $questions, int $quizId): array
+    public function getQuestions(int $quizId): array
     {
-//        $id      = $questions->getById($quizId);
-        $results = $questions->getQuestions($quizId);
+        $results = $this->quizes->getQuestions($quizId);
 
         return $results;
     }
@@ -84,29 +87,26 @@ class QuizService
     /**
      * Get list of available answers for this question
      *
-     * @param QuizRepository $answers
      * @param int $questionId
      * @return QuizAnswerModel[]
      */
 
-    public function getAnswers(QuizRepository $answers, int $questionId): array
+    public function getAnswers(int $questionId): array
     {
-        return $answers->getAnswers($questionId);
+        return $this->quizes->getAnswers($questionId);
 
     }
 
     /**
      * Submit current users answer
      *
-     * @param UserAnswerRepository $answers
-     * @param int $quizId
-     * @param int $answerId
+     * @param $model
      * @return \Quiz\Models\UserAnswerModel
      */
 
-    public function submitAnswer(UserAnswerRepository $answers, int $quizId, int $answerId)
+    public function submitAnswer($model)
     {
-        return $answers->saveAnswer($quizId, $answerId);
+        return $this->userAnswers->saveAnswer($model);
 
     }
 
@@ -119,18 +119,38 @@ class QuizService
      */
     public function isQuizCompleted(int $userId, int $quizId): bool
     {
-        // TODO implement
+        $answersCount   = count($this->userAnswers->getAnswers($userId, $quizId));
+        $questionsCount = count($this->quizes->getQuestions($quizId));
+        if ($answersCount == $questionsCount) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Get score in the quiz in percentage round(right answers / answer count * 100)
      *
+     * @param QuizAnswerModel $quizAnswerModelModel
      * @param int $userId
      * @param int $quizId
      * @return int 0-100
      */
     public function getScore(int $userId, int $quizId): int
     {
-        // TODO implement
+        $quizAnswerModelModel = new QuizAnswerModel;
+        $score       = 0;
+        $userAnswers = $this->userAnswers->getAnswers($userId, $quizId);
+        foreach ($userAnswers as $answer) {
+            if ($answer->answerId == $quizAnswerModelModel->id) {
+                if ($quizAnswerModelModel->isCorrect) {
+                    $score++;
+                }
+            }
+        }
+        $result = $score / count($userAnswers);
+
+        return $result;
+
     }
 }
