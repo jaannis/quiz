@@ -153,12 +153,13 @@ class QuizServiceTest extends TestCase
         $userRepo       = new UserRepository;
         $quizRepo       = new QuizRepository;
 
-        $service          = new QuizService($quizRepo, $userRepo, $userAnswerRepo);
-        $answer           = new UserAnswerModel;
-        $answer->id       = '1';
-        $answer->userId   = '123';
-        $answer->quizId   = '1';
-        $answer->answerId = '1';
+        $service            = new QuizService($quizRepo, $userRepo, $userAnswerRepo);
+        $answer             = new UserAnswerModel;
+        $answer->id         = '1';
+        $answer->userId     = '123';
+        $answer->quizId     = '1';
+        $answer->answerId   = '1';
+        $answer->questionId = '2';
         $userAnswerRepo->saveAnswer($answer);
 
         $model             = new QuizAnswerModel();
@@ -169,10 +170,10 @@ class QuizServiceTest extends TestCase
         $quizRepo->addAnswers($model);
 
         $results = $service->getScore($answer->userId, $answer->quizId);
-        var_dump($results);
-        die;
+//        var_dump($results);
+//        die;
 
-//        self::assertEquals('1', $results);
+        self::assertEquals('1', $results);
 
     }
 

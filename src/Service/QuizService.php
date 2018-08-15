@@ -137,12 +137,14 @@ class QuizService
      */
     public function getScore(int $userId, int $quizId): int
     {
-        $quizAnswerModelModel = new QuizAnswerModel;
-        $score                = 0;
-        $userAnswers          = $this->userAnswers->getAnswers($userId, $quizId);
+        $score       = 0;
+        $userAnswers = $this->userAnswers->getAnswers($userId, $quizId);
+
         foreach ($userAnswers as $answer) {
-            if ($answer->answerId == $quizAnswerModelModel->id) {
-                if ($quizAnswerModelModel->isCorrect) {
+            $questionId  = $answer->questionId;
+            $quizAnswers = $this->getAnswers($questionId);
+            foreach ($quizAnswers as $quizAnswer) {
+                if ($quizAnswer->isCorrect) {
                     $score = $score + 1;
                 }
             }
