@@ -34,9 +34,6 @@ class UserAnswerRepository
         return $results;
 
     }
-    public function getQuizAnswer(int $id)
-    {
 
-    }
 
 }

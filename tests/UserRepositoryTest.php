@@ -5,13 +5,23 @@ namespace Quiz\Tests;
 use PHPUnit\Framework\TestCase;
 use Quiz\Models\UserModel;
 use Quiz\Repositories\UserRepository;
+use Quiz\Repositories\UserRepositoryDatabase;
 
 class UserRepositoryTest extends TestCase
 {
+    public $usersRepo;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->usersRepo = new UserRepositoryDatabase;
+
+    }
 
     public function testUserCreation()
     {
-        $repo        = new UserRepository;
+        $repo        = $this->usersRepo;
         $user        = new UserModel;
         $user->name  = "Martins";
         $userCreated = $repo->saveOrCreate($user);
@@ -21,7 +31,7 @@ class UserRepositoryTest extends TestCase
 
     public function testNameEdit()
     {
-        $repo            = new UserRepository;
+        $repo            = $this->usersRepo;
         $user            = new UserModel;
         $user->name      = 'Martins';
         $savedUser       = $repo->saveOrCreate($user);
@@ -34,7 +44,7 @@ class UserRepositoryTest extends TestCase
 
     public function testGetAllUsersAndSearchById()
     {
-        $repo       = new UserRepository;
+        $repo       = $this->usersRepo;
         $user       = new UserModel;
         $user->name = 'Martins';
         $save       = $repo->saveOrCreate($user);

@@ -15,4 +15,12 @@ class QuestionRepositoryDatabase extends BaseRepository
     {
         return 'questions';
     }
+
+    public function getQuestions(int $id, array $select = [])
+    {
+        $table = static::getTableName();
+        $data  = $this->connection->select($table, ['quiz_id' => $id], $select);
+
+        return $data;
+    }
 }

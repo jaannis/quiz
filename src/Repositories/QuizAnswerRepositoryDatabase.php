@@ -16,4 +16,12 @@ class QuizAnswerRepositoryDatabase extends BaseRepository
     {
         return 'answers';
     }
+
+    public function getAnswers(int $questionId): array
+    {
+        $table = static::getTableName();
+        $data  = $this->connection->select($table, ['question_id' => $questionId]);
+
+        return $data;
+    }
 }

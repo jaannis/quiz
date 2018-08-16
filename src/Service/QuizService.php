@@ -6,38 +6,59 @@ use Quiz\Models\QuizAnswerModel;
 use Quiz\Models\QuestionModel;
 use Quiz\Models\QuizModel;
 use Quiz\Models\UserModel;
+use Quiz\Repositories\QuestionRepositoryDatabase;
+use Quiz\Repositories\QuizAnswerRepositoryDatabase;
 use Quiz\Repositories\QuizRepository;
+use Quiz\Repositories\QuizRepositoryDatabase;
 use Quiz\Repositories\UserAnswerRepository;
+use Quiz\Repositories\UserAnswerRepositoryDatabase;
 use Quiz\Repositories\UserRepository;
+use Quiz\Repositories\UserRepositoryDatabase;
 
 class QuizService
 {
-    /** @var QuizRepository */
-    private $quizes;
+    /** @var QuestionRepositoryDatabase */
+    private $questions;
     /** @var UserRepository */
     private $users;
     /** @var UserAnswerRepository */
     private $userAnswers;
+    /** @var QuizRepositoryDatabase */
+    private $quizAnswers;
+    /** @var QuizRepository */
+    private $quizzes;
 
+    /**
+     * QuizService constructor.
+     * @param QuestionRepositoryDatabase $questions
+     * @param UserRepositoryDatabase $users
+     * @param UserAnswerRepositoryDatabase $userAnswers
+     * @param QuizAnswerRepositoryDatabase $quizAnswers
+     * @param QuizRepositoryDatabase $quizzes
+     */
     public function __construct(
-        QuizRepository $quizes,
-        UserRepository $users,
-        UserAnswerRepository $userAnswers
+        QuestionRepositoryDatabase $questions,
+        UserRepositoryDatabase $users,
+        UserAnswerRepositoryDatabase $userAnswers,
+        QuizAnswerRepositoryDatabase $quizAnswers,
+        QuizRepositoryDatabase $quizzes
     ) {
-        $this->quizes      = $quizes;
+        $this->questions   = $questions;
         $this->users       = $users;
         $this->userAnswers = $userAnswers;
+        $this->quizAnswers = $quizAnswers;
+        $this->quizzes     = $quizzes;
     }
 
     /**
-     * Get list of available quizes
+     * Get list of available quizzes
      *
      * @return QuizModel[]
      */
 
-    public function getQuizes(): array
+    public function getQuizzes(): array
     {
-        return $this->quizes->getList();
+        return $this->quizzes->getList();
     }
 
     /**
@@ -79,9 +100,7 @@ class QuizService
 
     public function getQuestions(int $quizId): array
     {
-        $results = $this->quizes->getQuestions($quizId);
-
-        return $results;
+        return $this->questions->getQuestions($quizId);
     }
 
     /**
@@ -93,7 +112,7 @@ class QuizService
 
     public function getAnswers(int $questionId): array
     {
-        return $this->quizes->getAnswers($questionId);
+        return $this->quizAnswers->getAnswers($questionId);
 
     }
 
@@ -120,7 +139,7 @@ class QuizService
     public function isQuizCompleted(int $userId, int $quizId): bool
     {
         $answersCount   = count($this->userAnswers->getAnswers($userId, $quizId));
-        $questionsCount = count($this->quizes->getQuestions($quizId));
+        $questionsCount = count($this->questions->getQuestions($quizId));
         if ($answersCount == $questionsCount) {
             return true;
         }

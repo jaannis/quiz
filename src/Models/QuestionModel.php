@@ -7,5 +7,4 @@ class QuestionModel
     public $id;
     public $quizId;
     public $question;
-
 }

@@ -88,18 +88,4 @@ class QuizRepository
         return $questions;
     }
 
-    /**
-     * @return array
-     */
-    public function getList(): array
-    {
-        $quizNames = [];
-        foreach ($this->quizes as $quiz) {
-            $quizNames[] = $quiz->name;
-        }
-
-        return $quizNames;
-
-    }
-
 }
