@@ -1,11 +1,8 @@
-<html>
+<?php
+include_once '../vendor/autoload.php';
 
-<head>
-	<title></title>
+use Quiz\Repositories\UserRepositoryDatabase;
 
-</head>
-
-<body>
-<p>Hello world!</p>
-</body>
-</html>
+$repo = new UserRepositoryDatabase();
+$data = $repo->getById(1);
+var_dump($data);

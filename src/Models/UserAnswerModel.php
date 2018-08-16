@@ -9,5 +9,6 @@ class UserAnswerModel
     public $quizId;
     public $answerId;
     public $questionId;
+    public $createdAt;
 
 }
