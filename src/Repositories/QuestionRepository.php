@@ -4,7 +4,7 @@ namespace Quiz\Repositories;
 
 use Quiz\Models\QuestionModel;
 
-class QuestionRepositoryDatabase extends BaseRepository
+class QuestionRepository extends BaseRepository
 {
     public static function modelName(): string
     {
@@ -23,4 +23,11 @@ class QuestionRepositoryDatabase extends BaseRepository
 
         return $data;
     }
+
+    public function addQuestions(QuestionModel $question)
+    {
+        return $this->save($question);
+    }
+
+
 }

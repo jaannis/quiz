@@ -86,11 +86,12 @@ class MysqlConnection implements ConnectionInterface
      */
     public function insert(string $table, string $primaryKey, array $attributes): bool
     {
-        $attributes = $this->prepareAttributes($attributes, $primaryKey);
+        $attributes   = $this->prepareAttributes($attributes, $primaryKey);
         $attributeSql = implode(', ', array_keys($attributes));
-        $valueSql = implode(', ', array_fill(0, count($attributes), '?'));
-        $sql = "INSERT INTO $table ($attributeSql) VALUES ($valueSql)";
-        $statement = $this->connection->prepare($sql);
+        $valueSql     = implode(', ', array_fill(0, count($attributes), '?'));
+        $sql          = "INSERT INTO $table ($attributeSql) VALUES ($valueSql)";
+        $statement    = $this->connection->prepare($sql);
+
         return $statement->execute(array_values($attributes));
     }
 

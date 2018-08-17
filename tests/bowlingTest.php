@@ -54,17 +54,17 @@ class bowlingTest extends TestCase
         $this->assertEquals(38, $score);
     }
 
-    public function test_withAStrike_shouldAddPointsOfNextTwoThrows()
-    {
-        $this->calculator->throw(10);
-        $this->calculator->throw(5);
-        $this->calculator->throw(1);
-
-        for ($i = 0; $i < 16; $i++) {
-            $this->calculator->throw(1);
-        }
-        $score = $this->calculator->getScore();
-        $this->assertEquals(38, $score);
-
-    }
+//    public function test_withAStrike_shouldAddPointsOfNextTwoThrows()
+//    {
+//        $this->calculator->throw(10);
+//        $this->calculator->throw(5);
+//        $this->calculator->throw(1);
+//
+//        for ($i = 0; $i < 16; $i++) {
+//            $this->calculator->throw(1);
+//        }
+//        $score = $this->calculator->getScore();
+//        $this->assertEquals(38, $score);
+//
+//    }
 }

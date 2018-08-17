@@ -4,7 +4,7 @@ namespace Quiz\Repositories;
 
 use Quiz\Models\QuizAnswerModel;
 
-class QuizAnswerRepositoryDatabase extends BaseRepository
+class QuizAnswerRepository extends BaseRepository
 {
     public static function modelName(): string
 
@@ -17,11 +17,15 @@ class QuizAnswerRepositoryDatabase extends BaseRepository
         return 'answers';
     }
 
-    public function getAnswers(int $questionId): array
+    public function getQuizAnswers(int $questionId): array
     {
         $table = static::getTableName();
         $data  = $this->connection->select($table, ['question_id' => $questionId]);
 
         return $data;
+    }
+    public function addAnswer(QuizAnswerModel $quizAnswer)
+    {
+        return $this->save($quizAnswer);
     }
 }

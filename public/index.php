@@ -1,18 +1,22 @@
 <?php
-include_once '../vendor/autoload.php';
 
-use Quiz\Models\UserModel;
-use Quiz\Repositories\QuestionRepositoryDatabase;
-use Quiz\Repositories\UserRepositoryDatabase;
+use Quiz\Controllers\BaseController;
 
-$repo = new UserRepositoryDatabase();
-$data = $repo->getById(2);
-$user         = new UserModel;
-$name         = $user->name = 'Martins';
-$id           = $user->id;
-$newUser = $repo->saveOrCreate($user);
+require_once '../src/bootstrap.php';
 
-$repo = new QuestionRepositoryDatabase();
-$data2 = $repo->getQuestions(1);
-$data3 = $repo->getList();
-var_dump($data, $data2, $data3);
+define('BASE_DIR', __DIR__.'/..');
+define('SOURCE_DIR', BASE_DIR.'/src');
+define('VIEW_DIR', SOURCE_DIR.'/views');
+
+$requestUrl    = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+$requestString = substr($requestUrl, strlen($baseUrl));
+
+$urlParams      = explode('/', $requestString);
+$controllerName = ucfirst(array_shift($urlParams));
+$controllerName = $controllerNamespace . ($controllerName ? $controllerName : 'Index').'Controller';
+$actionName     = strtolower(array_shift($urlParams));
+$actionName     = ($actionName ? $actionName : 'index').'Action';
+
+/**@var BaseController $controller */
+$controller = new $controllerName;
+$controller->handleCall($actionName);

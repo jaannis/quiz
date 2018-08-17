@@ -8,12 +8,11 @@ use Quiz\Models\QuizAnswerModel;
 use Quiz\Models\QuizModel;
 use Quiz\Models\UserAnswerModel;
 use Quiz\Models\UserModel;
-use Quiz\Repositories\QuestionRepositoryDatabase;
-use Quiz\Repositories\QuizAnswerRepositoryDatabase;
+use Quiz\Repositories\QuestionRepository;
+use Quiz\Repositories\QuizAnswerRepository;
 use Quiz\Repositories\QuizRepository;
-use Quiz\Repositories\QuizRepositoryDatabase;
-use Quiz\Repositories\UserAnswerRepositoryDatabase;
-use Quiz\Repositories\UserRepositoryDatabase;
+use Quiz\Repositories\UserAnswerRepository;
+use Quiz\Repositories\UserRepository;
 use Quiz\Service\QuizService;
 
 class QuizServiceTest extends TestCase
@@ -25,20 +24,21 @@ class QuizServiceTest extends TestCase
     public $quizRepo;
     public $serviceRepo;
 
+    /**
+     *
+     */
     public function setUp()
     {
         parent::setUp();
 
-        $this->questionsRepo   = new QuestionRepositoryDatabase;
-        $this->usersRepo       = new UserRepositoryDatabase;
-        $this->userAnswersRepo = new UserAnswerRepositoryDatabase;
-        $this->quizAnswersRepo = new QuizAnswerRepositoryDatabase;
-        $this->quizRepo        = new QuizRepositoryDatabase;
+        $this->questionsRepo   = new QuestionRepository;
+        $this->usersRepo       = new UserRepository;
+        $this->userAnswersRepo = new UserAnswerRepository;
+        $this->quizAnswersRepo = new QuizAnswerRepository;
+        $this->quizRepo        = new QuizRepository;
 
         $this->serviceRepo = new QuizService(
             $this->questionsRepo,
-            $this->usersRepo,
-            $this->userAnswersRepo,
             $this->quizAnswersRepo,
             $this->quizRepo
         );
@@ -71,6 +71,9 @@ class QuizServiceTest extends TestCase
         self::assertCount(1, $getAll);
     }
 
+    /**
+     *
+     */
     public function testIsExistingUser()
     {
         $userAnswerRepo = new UserAnswerRepository;

@@ -2,7 +2,6 @@
 
 namespace Quiz\Repositories;
 
-use PDO;
 use Quiz\Database\MysqlConnection;
 use Quiz\Interfaces\ConnectionInterface;
 use Quiz\Interfaces\RepositoryInterface;
@@ -26,13 +25,14 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->connection = new MysqlConnection();
     }
 
-    public function getById(int $id, array $select = [])
-    {
-        $table = static::getTableName();
-        $data  = $this->connection->select($table, ['id' => $id], $select);
+//    final protected static function getConnection(): ConnectionInterface
+//    {
+//        if (!static::$connection) {
+//            static::$connection = $thisconne::getDriver();
+//        }
+//        return static::$connection;
+//    }
 
-        return $data;
-    }
     public function getList(): array
     {
         $table = static::getTableName();
@@ -41,14 +41,18 @@ abstract class BaseRepository implements RepositoryInterface
         return $data;
 
     }
-    public function addModel($model)
+
+    public function all(array $conditions = []): array
     {
-        $table = static::getTableName();
-        $data  = $this->connection->insert($table, 'id', $model);
+        $dataArray = $this->connection->select(static::getTableName(), $conditions);
+        $instances = [];
+        foreach ($dataArray as $data) {
+            $instances[] = static::init($data);
+        }
 
-        return $data;
-
+        return $instances;
     }
+
     public static function getPrimaryKey(): string
     {
         return 'id';
@@ -58,97 +62,97 @@ abstract class BaseRepository implements RepositoryInterface
      * @param array $attributes
      * @return BaseModel
      */
-//    public static function init(array $attributes)
-//    {
-//        $class    = static::modelName();
-//        $instance = new $class;
-//        foreach ($attributes as $key => $value) {
-//            if (property_exists($class, $key)) {
-//                $instance->$key = $value;
-//            }
-//        }
-//
-//        return $instance;
-//    }
-//
-//    /**
-//     * @param array $attributes
-//     * @return BaseModel
-//     */
-//    public static function initLoaded(array $attributes)
-//    {
-//        $instance        = static::init($attributes);
-//        $instance->isNew = false;
-//
-//        return $instance;
-//    }
-//
-//    /**
-//     * @param int $id
-//     * @return BaseModel
-//     */
-//    public function getById(int $id)
-//    {
-//        return $this->one(['id' => $id]);
-//    }
-//
-//    /**
-//     * @param array $conditions
-//     * @return BaseModel
-//     */
-//    public function one(array $conditions = [])
-//    {
-//        $data = $this->connection->select(static::getTableName(), $conditions)[0] ?? [];
-//        if (!$data) {
-//            return null;
-//        }
-//
-//        return static::initLoaded($data);
-//    }
-//
-//    /**
-//     * @param BaseModel $model
-//     * @return bool
-//     */
-//    public function save($model): bool
-//    {
-//        $connection = $this->connection;
-//        if ($model->isNew) {
-//            return $connection->insert(static::getTableName(), static::getPrimaryKey(), $this->getAttributes($model));
-//        }
-//
-//        return $connection->update(static::getTableName(), static::getPrimaryKey(), $this->getAttributes($model));
-//    }
-//
-//    /**
-//     * @param BaseModel $model
-//     * @return array
-//     */
-//    public function getAttributes($model): array
-//    {
-//        if (!$model->attributes) {
-//            $model = $this->prepareAttributes($model);
-//        }
-//
-//        return $model->attributes;
-//    }
-//
-//    /**
-//     * @param $model
-//     * @return BaseModel
-//     */
-//    protected function prepareAttributes($model)
-//    {
-//        $columns    = $this->connection->fetchColumns(static::getTableName());
-//        $attributes = [];
-//        foreach ($columns as $column) {
-//            if (property_exists(static::modelName(), $column)) {
-//                $attributes[$column] = $model->{$column};
-//            }
-//        }
-//        $model->attributes = $attributes;
-//
-//        return $model;
-//    }
+    public static function init(array $attributes)
+    {
+        $class    = static::modelName();
+        $instance = new $class;
+        foreach ($attributes as $key => $value) {
+            if (property_exists($class, $key)) {
+                $instance->$key = $value;
+            }
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @param array $attributes
+     * @return BaseModel
+     */
+    public static function initLoaded(array $attributes)
+    {
+        $instance        = static::init($attributes);
+        $instance->isNew = false;
+
+        return $instance;
+    }
+
+    /**
+     * @param int $id
+     * @return BaseModel
+     */
+    public function getById(int $id)
+    {
+        return $this->one(['id' => $id]);
+    }
+
+    /**
+     * @param array $conditions
+     * @return BaseModel
+     */
+    public function one(array $conditions = [])
+    {
+        $data = $this->connection->select(static::getTableName(), $conditions)[0] ?? [];
+        if (!$data) {
+            return null;
+        }
+
+        return static::initLoaded($data);
+    }
+
+    /**
+     * @param BaseModel $model
+     * @return bool
+     */
+    public function save($model): bool
+    {
+        $connection = $this->connection;
+        if ($model->isNew) {
+            return $connection->insert(static::getTableName(), static::getPrimaryKey(), $this->getAttributes($model));
+        }
+
+        return $connection->update(static::getTableName(), static::getPrimaryKey(), $this->getAttributes($model));
+    }
+
+    /**
+     * @param BaseModel $model
+     * @return array
+     */
+    public function getAttributes($model): array
+    {
+        if (!$model->attributes) {
+            $model = $this->prepareAttributes($model);
+        }
+
+        return $model->attributes;
+    }
+
+    /**
+     * @param $model
+     * @return BaseModel
+     */
+    protected function prepareAttributes($model)
+    {
+        $columns    = $this->connection->fetchColumns(static::getTableName());
+        $attributes = [];
+        foreach ($columns as $column) {
+            if (property_exists(static::modelName(), $column)) {
+                $attributes[$column] = $model->{$column};
+            }
+        }
+        $model->attributes = $attributes;
+
+        return $model;
+    }
 
 }

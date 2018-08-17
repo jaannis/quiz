@@ -4,36 +4,29 @@ namespace Quiz\Repositories;
 
 use Quiz\Models\UserAnswerModel;
 
-class UserAnswerRepository
+class UserAnswerRepository extends BaseRepository
 {
-    private $answers = [];
 
-    /**
-     * @param UserAnswerModel $answer
-     * @return UserAnswerModel
-     */
+    public static function modelName(): string
+    {
+        return UserAnswerModel::class;
+    }
+
+    public static function getTableName(): string
+    {
+        return 'user_answers';
+    }
+
+    public function getUserAnswers(int $userId, int $quizId): array
+    {
+        $table = static::getTableName();
+        $data  = $this->connection->select($table, ['user_id' => $userId, 'quiz_id' => $quizId], $select);
+
+        return $data;
+    }
     public function saveAnswer(UserAnswerModel $answer)
     {
-        return $this->answers[] = $answer;
+        return $this->save($answer);
     }
-
-    /**
-     * @param int $userId
-     * @param int $quizId
-     * @return array
-     */
-    public function getAnswers(int $userId, int $quizId): array
-    {
-        $results = [];
-        foreach ($this->answers as $answer) {
-            if ($answer->userId == $userId && $answer->quizId == $quizId) {
-                $results[] = $answer;
-            }
-        }
-
-        return $results;
-
-    }
-
 
 }
