@@ -2,7 +2,11 @@
 
 namespace Quiz\Controllers;
 
+use Quiz\Models\QuestionModel;
 use Quiz\Models\UserModel;
+use Quiz\Repositories\QuestionRepository;
+use Quiz\Repositories\QuizAnswerRepository;
+use Quiz\Repositories\QuizRepository;
 use Quiz\Repositories\UserRepository;
 
 class AjaxController extends BaseAjaxController
@@ -17,5 +21,22 @@ class AjaxController extends BaseAjaxController
 
         return $user;
     }
+
+    public function getQuizzesAction()
+    {
+        $repo = new QuizRepository();
+        $list = $repo->all();
+
+        return $list;
+    }
+
+//    public function getQuestions(){
+//        $repo = new QuestionRepository();
+//        $listOfQuestions = $repo->getQuestions();
+//        $answersRepo = new QuizAnswerRepository();
+//        $listOfAnswers = $answersRepo->getQuizAnswers();
+//        return $listOfQuestions, $listOfAnswers;
+//
+//    }
 
 }
