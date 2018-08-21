@@ -1,15 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import * as types from './mutations.js';
-import Quiz from '../models/model.quiz.js';
 import QuizRepository from '../repositories/repository.quiz.js';
+import Question from "../models/model.question";
+import Quiz from "../models/model.quiz.js";
 
 Vue.use(Vuex);
+
 export default new Vuex.Store({
     state: {
         name: '',
         activeQuizId: null,
         allQuizzes: [],
+        activeQuestion: null,
+        // state: '',
     },
     mutations: {
         [types.SET_ACTIVE_QUIZ](state, quizId) {
@@ -21,6 +25,13 @@ export default new Vuex.Store({
         [types.SET_NAME](state, name) {
             state.name = name;
         },
+        [types.SET_QUESTION](state, question) {
+            state.activeQuestion = question;
+        },
+        [types.SET_RESULTS](state, results) {
+            state.results = results;
+        },
+
 
     },
     actions: {
@@ -33,23 +44,26 @@ export default new Vuex.Store({
                     context.commit(types.SET_ALL_QUIZZES, quizzes);
                 });
         },
-        // context.commit(types.SET_ALL_QUIZZES, [
-        //         {
-        //             id: 1,
-        //             name: 'Programming',
-        //         },
-        //         {
-        //             id: 2,
-        //             name: 'Something',
-        //         },
-        //     ].map(Quiz.fromArray)
-        // )
+
         setName(context, name) {
             context.commit(types.SET_NAME, name);
         },
         start(context) {
-            console.log(this.state.name, this.state.activeQuizId);
-            QuizRepository.start(this.state.name, this.state.activeQuizId);
-        }
+            // console.log(this.state.name, this.state.activeQuizId);
+            QuizRepository.start(this.state.name, this.state.activeQuizId)
+                .then(question => context.commit(types.SET_QUESTION, question));
+        },
+        answer(context, answerId) {
+            QuizRepository.answer(answerId)
+                .then(questionOrResults => {
+                    if (questionOrResults instanceof Question) {
+                        context.commit(types.SET_QUESTION, questionOrResults);
+                    } else {
+                        context.commit(types.SET_QUESTION, null);
+                        context.commit(types.SET_RESULTS, questionOrResults)
+                    }
+                })
+        },
+
     }
 });

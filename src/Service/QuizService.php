@@ -73,7 +73,9 @@ class QuizService
      * @return int 0-100
      */
     public
-    function getScore( int $userId, int $quizId
+    function getScore(
+        int $userId,
+        int $quizId
     ): int {
         $score       = 0;
         $userAnswers = $this->userAnswers->getUserAnswers($userId, $quizId);

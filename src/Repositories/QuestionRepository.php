@@ -29,5 +29,4 @@ class QuestionRepository extends BaseRepository
         return $this->save($question);
     }
 
-
 }

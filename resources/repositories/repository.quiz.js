@@ -1,9 +1,10 @@
 import Api from '../api.js';
 import Quiz from "../models/model.quiz";
+import Question from "../models/model.question";
 
 class QuizRepository {
     constructor() {
-        this.quizApi = new Api('ajax'); //change
+        this.quizApi = new Api('ajaxTest'); //change
     }
 
     /**
@@ -25,12 +26,30 @@ class QuizRepository {
         return new Promise(resolve => {
             this.quizApi.post('start', {name, quizId})
                 .then(response => {
-                    // apstrada  ka vajag
-                    //questions.fromArray
-                    resolve()
+                    let question = Question.fromArray(response.data.result);
+                    // console.log(response.data.result);
+
+                    resolve(question)
+                })
+                .catch(() => alert('Something went wrong'));
+        })
+    }
+
+    answer(answerId) {
+        return new Promise(resolve => {
+            this.quizApi.post('answer', {answerId})
+                .then(response => {
+                    resolve(
+                        (typeof response.data.result === 'string') ?
+                            response.data.result :
+                        Question.fromArray(response.data.result));
+                })
+                .catch(() => {
+                    debugger;
                 })
         })
     }
+
 }
 
 export default new QuizRepository();

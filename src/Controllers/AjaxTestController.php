@@ -2,69 +2,78 @@
 
 namespace Quiz\Controllers;
 
-use Quiz\Models\QuestionModel;
 use Quiz\Models\UserModel;
-use Quiz\Repositories\QuestionRepository;
-use Quiz\Repositories\QuizAnswerRepository;
-use Quiz\Repositories\QuizRepository;
 use Quiz\Repositories\UserRepository;
 
-class AjaxController extends BaseAjaxController
+class AjaxTestController extends BaseAjaxController
 {
-    public function startAction()
+    /** @var UserRepository */
+//    protected $userRepository;
+
+    /**
+     * AjaxTestController constructor.
+     * @param UserRepository $userRepository
+     */
+    public function __construct()
     {
-
-        $name       = $this->post['name'];
-        $repo       = new UserRepository();
-        $user       = new UserModel();
-        $user->name = $name;
-        $repo->saveOrCreate($user);
-
-        $quizId       = $this->post['quizId'];
-        $questionRepo = new QuestionRepository();
-        $question     = $questionRepo->getQuestions($quizId);
-        $questionId   = $question;
-        $answersRepo  = new QuizAnswerRepository();
-        $answers      = $answersRepo->getQuizAnswers($questionId);
-        $result       = $question + $answers;
-
-        return $questionId;
+        if (!session_id()) {
+            session_start();
+        }
+//        $this->userRepository = $userRepository();
     }
 
     public function saveUserAction()
     {
-        $name       = $this->post['name'];
-        $repo       = new UserRepository();
-        $user       = new UserModel();
+        $name = $this->post['name'];
+        /** @var UserModel $user */
         $user->name = $name;
+        $repo = new UserRepository();
         $repo->saveOrCreate($user);
+//        $this->userRepository->saveOrCreate($user);
 
         return $user;
     }
 
     public function getQuizzesAction()
     {
-        $repo = new QuizRepository();
-        $list = $repo->all();
-
-        return $list;
+        return [
+            [
+                'id'   => 1,
+                'name' => 'Programming',
+            ],
+        ];
     }
 
-    public function getQuestionsAction($quizId)
+    public function indexAction()
     {
-        $repo            = new QuestionRepository();
-        $listOfQuestions = $repo->getQuestions($quizId);
-
-        return $listOfQuestions;
-
+        return [
+            'name'   => '',
+            'quizes' => [
+                [
+                    'id'   => 1,
+                    'name' => 'Programming',
+                ],
+            ],
+        ];
     }
 
-    public function getAnswersAction($questionId)
+    public function startAction()
     {
-        $answersRepo   = new QuizAnswerRepository();
-        $listOfAnswers = $answersRepo->getQuizAnswers($questionId);
+        $quizId                    = $this->post['quizId'];
+        $_SESSION['questionIndex'] = 0;
 
-        return $listOfAnswers;
+        return $this->getQuestion();
+    }
+
+    public function answerAction()
+    {
+        $answerId = $this->post['answerId'];
+
+        $index = isset($_SESSION['questionIndex']) ? (int)$_SESSION['questionIndex'] : 0;
+        $index++;
+        $_SESSION['questionIndex'] = $index;
+
+        return $this->getQuestion($index);
     }
 
     public function getQuestion(int $index = 0)
@@ -111,6 +120,11 @@ class AjaxController extends BaseAjaxController
                 ],
             ],
         ];
-    }
 
+        if (!isset($questions[$index])) {
+            return 'Good you have done!';
+        }
+
+        return $questions[$index];
+    }
 }
