@@ -4,7 +4,7 @@ import Question from "../models/model.question";
 
 class QuizRepository {
     constructor() {
-        this.quizApi = new Api('ajaxTest'); //change
+        this.quizApi = new Api('ajax'); //change
     }
 
     /**
@@ -27,7 +27,7 @@ class QuizRepository {
             this.quizApi.post('start', {name, quizId})
                 .then(response => {
                     let question = Question.fromArray(response.data.result);
-                    // console.log(response.data.result);
+                    console.log(response.data.result);
 
                     resolve(question)
                 })
@@ -42,7 +42,8 @@ class QuizRepository {
                     resolve(
                         (typeof response.data.result === 'string') ?
                             response.data.result :
-                        Question.fromArray(response.data.result));
+                            Question.fromArray(response.data.result)
+                    );
                 })
                 .catch(() => {
                     debugger;

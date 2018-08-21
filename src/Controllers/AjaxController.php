@@ -2,44 +2,23 @@
 
 namespace Quiz\Controllers;
 
-use Quiz\Models\QuestionModel;
-use Quiz\Models\UserModel;
-use Quiz\Repositories\QuestionRepository;
-use Quiz\Repositories\QuizAnswerRepository;
 use Quiz\Repositories\QuizRepository;
-use Quiz\Repositories\UserRepository;
+use Quiz\Service\GetQuestionsService;
 
 class AjaxController extends BaseAjaxController
 {
-    public function startAction()
+    protected $getQuestionService;
+
+    /**
+     * AjaxController constructor.
+     * @param GetQuestionsService $getQuestionService
+     */
+    public function __construct(GetQuestionsService $getQuestionService)
     {
-
-        $name       = $this->post['name'];
-        $repo       = new UserRepository();
-        $user       = new UserModel();
-        $user->name = $name;
-        $repo->saveOrCreate($user);
-
-        $quizId       = $this->post['quizId'];
-        $questionRepo = new QuestionRepository();
-        $question     = $questionRepo->getQuestions($quizId);
-        $questionId   = $question;
-        $answersRepo  = new QuizAnswerRepository();
-        $answers      = $answersRepo->getQuizAnswers($questionId);
-        $result       = $question + $answers;
-
-        return $questionId;
-    }
-
-    public function saveUserAction()
-    {
-        $name       = $this->post['name'];
-        $repo       = new UserRepository();
-        $user       = new UserModel();
-        $user->name = $name;
-        $repo->saveOrCreate($user);
-
-        return $user;
+        if (!session_id()) {
+            session_start();
+        }
+        $this->getQuestionService = $getQuestionService;
     }
 
     public function getQuizzesAction()
@@ -50,67 +29,30 @@ class AjaxController extends BaseAjaxController
         return $list;
     }
 
-    public function getQuestionsAction($quizId)
+    public function startAction()
     {
-        $repo            = new QuestionRepository();
-        $listOfQuestions = $repo->getQuestions($quizId);
+        $quizId                 = $this->post['quizId'];
+        $_SESSION['questionNr'] = 1;
+        $_SESSION['quizId']     = $quizId;
+        $questionNr             = $_SESSION['questionNr'];
+        $name                   = $this->post['name'];
 
-        return $listOfQuestions;
+//        $repo = new GetQuestionsService();
+        return $this->getQuestionService->startQuestion($quizId, $questionNr, $name);
+
+//        return $next;
 
     }
 
-    public function getAnswersAction($questionId)
+    public function answerAction()
     {
-        $answersRepo   = new QuizAnswerRepository();
-        $listOfAnswers = $answersRepo->getQuizAnswers($questionId);
+        $answerId = $this->post['answerId'];
 
-        return $listOfAnswers;
-    }
+        $questionNr = isset($_SESSION['questionNr']) ? (int)$_SESSION['questionNr'] : 0;
+        $questionNr++;
+        $_SESSION['questionNr'] = $questionNr;
 
-    public function getQuestion(int $index = 0)
-    {
-        $questions = [
-            [
-                'id'       => 1,
-                'question' => 'What is the most basic language Microsoft made?',
-                'answers'  => [
-                    [
-                        'id'     => 1,
-                        'answer' => 'Visual Basic',
-                    ],
-                    [
-                        'id'     => 2,
-                        'answer' => 'DirectX',
-                    ],
-                    [
-                        'id'     => 3,
-                        'answer' => 'Batch',
-                    ],
-                    [
-                        'id'     => 4,
-                        'answer' => 'C++',
-                    ],
-                ],
-            ],
-            [
-                'id'       => 2,
-                'question' => 'What does HTML stand for?',
-                'answers'  => [
-                    [
-                        'id'     => 1,
-                        'answer' => 'Hyper Text Markup Language',
-                    ],
-                    [
-                        'id'     => 2,
-                        'answer' => 'Home Tool Markup Language',
-                    ],
-                    [
-                        'id'     => 3,
-                        'answer' => 'Hyperlinks and Text Markup Language',
-                    ],
-                ],
-            ],
-        ];
+        return $this->getQuestionService->nextQuestions($answerId, $questionNr);
     }
 
 }

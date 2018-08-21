@@ -3,7 +3,7 @@ module.exports = {
     outputDir: 'public/assets',
     devServer: {
         proxy: {
-            '/ajaxTest': {
+            '/ajax': {
                 target: 'http://localhost:8000/',
                 ws: true,
                 changeOrigin: true

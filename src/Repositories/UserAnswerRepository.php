@@ -17,7 +17,7 @@ class UserAnswerRepository extends BaseRepository
         return 'user_answers';
     }
 
-    public function getUserAnswers(int $userId, int $quizId): array
+    public function getUserAnswers(int $userId, int $quizId, array $select = []): array
     {
         $table = static::getTableName();
         $data  = $this->connection->select($table, ['user_id' => $userId, 'quiz_id' => $quizId], $select);

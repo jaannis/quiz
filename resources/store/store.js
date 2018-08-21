@@ -9,11 +9,26 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        /**
+         * @type {string}
+         */
         name: '',
+        /**
+         * @type {?number}
+         */
         activeQuizId: null,
+        /**
+         * @type {Array<Quiz>}
+         */
         allQuizzes: [],
+        /**
+         * @type {?Question}
+         */
         activeQuestion: null,
-        // state: '',
+        /**
+         * @type {string}
+         */
+        result: ''
     },
     mutations: {
         [types.SET_ACTIVE_QUIZ](state, quizId) {
@@ -28,11 +43,9 @@ export default new Vuex.Store({
         [types.SET_QUESTION](state, question) {
             state.activeQuestion = question;
         },
-        [types.SET_RESULTS](state, results) {
-            state.results = results;
+        [types.SET_RESULTS](state, result) {
+            state.result = result;
         },
-
-
     },
     actions: {
         setActiveQuizId(context, quizId) {
@@ -60,10 +73,13 @@ export default new Vuex.Store({
                         context.commit(types.SET_QUESTION, questionOrResults);
                     } else {
                         context.commit(types.SET_QUESTION, null);
-                        context.commit(types.SET_RESULTS, questionOrResults)
+                        context.commit(types.SET_RESULTS, questionOrResults);
                     }
-                })
+                });
         },
-
+        restart(context) {
+            context.commit(types.SET_ACTIVE_QUIZ, null);
+            context.commit(types.SET_RESULTS, null);
+        }
     }
 });

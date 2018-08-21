@@ -7,4 +7,5 @@ class QuestionModel extends BaseModel
     public $id;
     public $quizId;
     public $question;
+    public $questionNr;
 }

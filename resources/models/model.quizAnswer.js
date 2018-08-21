@@ -12,10 +12,6 @@ export default class QuizAnswer {
          *$type {name}
          * */
         this.questionId = null;
-        /**
-         *$type {bool}
-         * */
-        this.isCorrect = null;
     }
 
 
@@ -24,7 +20,6 @@ export default class QuizAnswer {
         quizAnswer.id = rawData.id;
         quizAnswer.answer = rawData.answer;
         quizAnswer.questionId = rawData.questionId;
-        quizAnswer.isCorrect = rawData.isCorrect;
 
 
         return quizAnswer;

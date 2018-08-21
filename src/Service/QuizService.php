@@ -36,12 +36,9 @@ class QuizService
      * @param $model
      * @return bool
      */
-    public
-    function submitAnswer(
-        $model
-    ) {
+    public function submitAnswer($model)
+    {
         return $this->userAnswers->saveAnswer($model);
-
     }
 
     /**
@@ -51,13 +48,12 @@ class QuizService
      * @param int $quizId
      * @return bool
      */
-    public
-    function isQuizCompleted(
-        int $userId,
-        int $quizId
-    ): bool {
+    public function isQuizCompleted(int $userId, int $quizId): bool
+    {
+
         $answersCount   = count($this->userAnswers->getUserAnswers($userId, $quizId));
-        $questionsCount = count($this->questions->getQuestions($quizId));
+        $questionsCount = count($this->questions->getAllQuestion($quizId));
+
         if ($answersCount == $questionsCount) {
             return true;
         }
@@ -72,11 +68,8 @@ class QuizService
      * @param int $quizId
      * @return int 0-100
      */
-    public
-    function getScore(
-        int $userId,
-        int $quizId
-    ): int {
+    public function getScore(int $userId, int $quizId): int
+    {
         $score       = 0;
         $userAnswers = $this->userAnswers->getUserAnswers($userId, $quizId);
 

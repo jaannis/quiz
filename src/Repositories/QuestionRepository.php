@@ -16,7 +16,15 @@ class QuestionRepository extends BaseRepository
         return 'questions';
     }
 
-    public function getQuestions(int $id, array $select = [])
+    public function getQuestion(int $id, int $questionNr, array $select = [])
+    {
+        $table = static::getTableName();
+        $data  = $this->connection->select($table, ['quiz_id' => $id, 'question_nr' => $questionNr], $select);
+
+        return $data;
+    }
+
+    public function getAllQuestion(int $id, array $select = [])
     {
         $table = static::getTableName();
         $data  = $this->connection->select($table, ['quiz_id' => $id], $select);
@@ -24,8 +32,10 @@ class QuestionRepository extends BaseRepository
         return $data;
     }
 
-    public function addQuestions(QuestionModel $question)
-    {
+    public
+    function addQuestions(
+        QuestionModel $question
+    ) {
         return $this->save($question);
     }
 
