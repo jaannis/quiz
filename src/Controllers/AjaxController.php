@@ -4,22 +4,11 @@ namespace Quiz\Controllers;
 
 use Quiz\Repositories\QuizRepository;
 use Quiz\Service\GetQuestionsService;
+use Quiz\Service\SaveService;
 
 class AjaxController extends BaseAjaxController
 {
-//    protected $getQuestionService;
 
-    /**
-     * AjaxController constructor.
-     * @param GetQuestionsService $getQuestionService
-     */
-//    public function __construct(GetQuestionsService $getQuestionService)
-//    {
-////        if (!session_id()) {
-////            session_start();
-////        }
-//        $this->getQuestionService = $getQuestionService;
-//    }
     public function __construct()
     {
         if (!session_id()) {
@@ -46,26 +35,13 @@ class AjaxController extends BaseAjaxController
         $repo = new GetQuestionsService();
 
         return $repo->startQuestion($quizId, $questionNr, $name);
-//        return $this->getQuestionService->startQuestion($quizId, $questionNr, $name);
-
-//        return $next;
-
     }
 
     public function answerAction()
     {
-        $service    = new GetQuestionsService();
-        $userId     = $_SESSION['user'];
-        $quizId     = $_SESSION['quizId'];
-        $questionNr = $_SESSION['questionNr'];
-        $question   = $service->oneQuestion($quizId, $questionNr);
-        $questionId = $question['id'];
-        $service    = new GetQuestionsService();
-        $answerId   = $this->post['answerId'];
-
-        $service->saveUserAnswer($answerId, $quizId, $userId, $questionId);
-
-        $answerId = $this->post['answerId'];
+        $answerId    = $this->post['answerId'];
+        $saveService = new SaveService();
+        $saveService->saveUserAnswer($answerId);
 
         $questionNr = isset($_SESSION['questionNr']) ? (int)$_SESSION['questionNr'] : 0;
         $questionNr++;
@@ -73,9 +49,7 @@ class AjaxController extends BaseAjaxController
 
         $repo = new GetQuestionsService();
 
-        return $repo->nextQuestions($answerId, $questionNr);
-
-//        return $this->getQuestionService->nextQuestions($answerId, $questionNr);
+        return $repo->nextQuestions($questionNr);
     }
 
 }

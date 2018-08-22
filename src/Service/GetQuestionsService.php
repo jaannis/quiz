@@ -2,12 +2,9 @@
 
 namespace Quiz\Service;
 
-use Quiz\Models\UserAnswerModel;
-use Quiz\Models\UserModel;
 use Quiz\Repositories\QuestionRepository;
 use Quiz\Repositories\QuizAnswerRepository;
 use Quiz\Repositories\UserAnswerRepository;
-use Quiz\Repositories\UserRepository;
 
 class GetQuestionsService
 {
@@ -20,13 +17,10 @@ class GetQuestionsService
 
     public function startQuestion($quizId, $questionNr, $name)
     {
-        $repo             = new UserRepository();
-        $user             = new UserModel();
-        $user->name       = $name;
-        $_SESSION['user'] = $repo->saveUser($user);
+        $saveService      = new SaveService();
+        $_SESSION['user'] = $saveService->saveUserModel($name);
 
         return $this->prepareQuestion($quizId, $questionNr);
-
     }
 
     public function prepareQuestion($quizId, $questionNr)
@@ -36,7 +30,7 @@ class GetQuestionsService
         $answersRepo = new QuizAnswerRepository();
         $answers     = $answersRepo->getQuizAnswers($question['id']);
 
-        return $this->getQuestion($question, $answers);
+        return $this->sendQuestionToFront($question, $answers);
     }
 
     public function oneQuestion($quizId, $questionNr)
@@ -48,19 +42,18 @@ class GetQuestionsService
         return $question;
     }
 
-    public function getQuestion($question, $answers)
+    public function sendQuestionToFront($question, $answers)
     {
         $questions = [
             'id'       => $question['id'],
             'question' => $question['questions'],
             'answers'  => $answers,
-
         ];
 
         return $questions;
     }
 
-    public function nextQuestions($answerId, $questionNr)
+    public function nextQuestions($questionNr)
     {
         $userId          = $_SESSION['user'];
         $questionsRepo   = new QuestionRepository;
@@ -74,17 +67,8 @@ class GetQuestionsService
 
             return $this->prepareQuestion($quizId, $questionNr);
         }
+
         return $quizService->getScore($userId, $quizId);
     }
 
-    public function saveUserAnswer($answerId, $quizId, $userId, $questionId)
-    {
-        $repo                     = new UserAnswerRepository();
-        $answerModel              = new UserAnswerModel();
-        $answerModel->answer_id   = $answerId;
-        $answerModel->quiz_id     = $quizId;
-        $answerModel->user_id     = $userId;
-        $answerModel->question_id = $questionId;
-        $repo->saveAnswer($answerModel);
-    }
 }

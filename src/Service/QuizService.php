@@ -72,9 +72,7 @@ class QuizService
             }
         }
 
-//        $result = $score / count($userAnswers);
-
-        return 'Your score is '. $score;
+        return 'Your score is '.$score;
     }
 
 }
