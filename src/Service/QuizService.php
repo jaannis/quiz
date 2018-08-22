@@ -65,7 +65,7 @@ class QuizService
         $userAnswers = $this->userAnswers->getUserAnswers($userId, $quizId);
 
         foreach ($userAnswers as $answer) {
-            $questionId = $answer['question_id'];
+            $questionId = $answer['answer_id'];
             $quizAnswer = $this->quizAnswers->getById($questionId);
             if ($quizAnswer->is_correct) {
                 $score = $score + 1;
