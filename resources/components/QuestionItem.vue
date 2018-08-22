@@ -1,24 +1,18 @@
 <template>
 	<div>
-		<h1>
-			{{ question.question }}
-			<ul>
-				<li v-for="answer in question.answers">
-					<AnswerItem :answer="answer" :on-answered="onAnsweredPicked"></AnswerItem>
-				</li>
-			</ul>
-			<button @click="onAnswered">Next Questions</button>
-		</h1>
+		<h1>{{question.question}}</h1>
+		<ul>
+			<li v-for="answer in question.answers">
+				<AnswerItem :answer="answer" :on-answered="onAnswerPicked" :is-active="answerId === answer.id" />
+			</li>
+		</ul>
+		<button @click.stop="onAnswered" :disabled="!answerId">Next</button>
 	</div>
-
 </template>
 <script>
-    import {mapActions} from 'vuex';
     import AnswerItem from "./AnswerItem";
-
-
+    import {mapActions} from 'vuex';
     export default {
-        name: 'QuestionItem',
         components: {AnswerItem},
         data() {
             return {
@@ -33,20 +27,21 @@
             }
         },
         methods: Object.assign({}, mapActions([
-                'answer'
-            ]),
-            {
-                onAnsweredPicked(answerId) {
-                    this.answerId = answerId;
-                },
-                onAnswered() {
-                    if (!this.answerId) {
-                        alert('No answer picked');
-                        return;
-                    }
-                    // alert(this.answerId);
-                    this.answer(this.answerId);
+            'answer',
+        ]), {
+            onAnswerPicked(answerId) {
+                this.answerId = answerId;
+            },
+            onAnswered() {
+                if (!this.answerId) {
+                    alert('No answer picked');
                 }
-            })
+                this.answer(this.answerId);
+                this.reset();
+            },
+            reset() {
+                this.answerId = null;
+            }
+        })
     }
 </script>

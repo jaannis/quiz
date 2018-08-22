@@ -1,23 +1,24 @@
 <template>
-	<a href="#" @click="onAnsweredPicked">{{answer.answer}}</a>
+	<a href="#" @click="onClick" :class="isActive ? 'active' : ''">{{ answer.answer }}</a>
 </template>
-<script>
-    import QuizAnswer from "../models/model.quizAnswer";
 
+<script>
+    import Answer from '../models/model.quizAnswer.js';
     export default {
         name: 'AnswerItem',
         props: {
             answer: {
-                type: QuizAnswer,
+                type: Answer,
                 required: true,
             },
             onAnswered: {
                 type: Function,
                 required: true,
-            }
+            },
+            isActive: Boolean,
         },
         methods: {
-            onAnsweredPicked() {
+            onClick() {
                 this.onAnswered(this.answer.id);
             }
         }
