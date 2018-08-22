@@ -33,15 +33,6 @@ class QuizService
     }
 
     /**
-     * @param $model
-     * @return bool
-     */
-    public function submitAnswer($model)
-    {
-        return $this->userAnswers->saveAnswer($model);
-    }
-
-    /**
      * Check if user has answered all questions for this quiz (correct or incorrect)
      *
      * @param int $userId
@@ -66,25 +57,24 @@ class QuizService
      *
      * @param int $userId
      * @param int $quizId
-     * @return int 0-100
+     * @return string
      */
-    public function getScore(int $userId, int $quizId): int
+    public function getScore(int $userId, int $quizId): string
     {
         $score       = 0;
         $userAnswers = $this->userAnswers->getUserAnswers($userId, $quizId);
 
         foreach ($userAnswers as $answer) {
-            $questionId  = $answer->questionId;
-            $quizAnswers = $this->quizAnswers->getQuizAnswers($questionId);
-            foreach ($quizAnswers as $quizAnswer) {
-                if ($quizAnswer->isCorrect) {
-                    $score = $score + 1;
-                }
+            $questionId = $answer['question_id'];
+            $quizAnswer = $this->quizAnswers->getById($questionId);
+            if ($quizAnswer->is_correct) {
+                $score = $score + 1;
             }
         }
-        $result = $score / count($userAnswers);
 
-        return $result;
+//        $result = $score / count($userAnswers);
 
+        return 'Your score is '. $score;
     }
+
 }

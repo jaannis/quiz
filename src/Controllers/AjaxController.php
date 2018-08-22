@@ -54,6 +54,17 @@ class AjaxController extends BaseAjaxController
 
     public function answerAction()
     {
+        $service    = new GetQuestionsService();
+        $userId     = $_SESSION['user'];
+        $quizId     = $_SESSION['quizId'];
+        $questionNr = $_SESSION['questionNr'];
+        $question   = $service->oneQuestion($quizId, $questionNr);
+        $questionId = $question['id'];
+        $service    = new GetQuestionsService();
+        $answerId   = $this->post['answerId'];
+
+        $service->saveUserAnswer($answerId, $quizId, $userId, $questionId);
+
         $answerId = $this->post['answerId'];
 
         $questionNr = isset($_SESSION['questionNr']) ? (int)$_SESSION['questionNr'] : 0;

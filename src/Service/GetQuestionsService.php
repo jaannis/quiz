@@ -25,18 +25,18 @@ class GetQuestionsService
         $user->name       = $name;
         $_SESSION['user'] = $repo->saveUser($user);
 
-        return $this->takeQuestion($quizId, $questionNr);
+        return $this->prepareQuestion($quizId, $questionNr);
 
     }
 
-    public function takeQuestion($quizId, $questionNr)
+    public function prepareQuestion($quizId, $questionNr)
     {
         $question = $this->oneQuestion($quizId, $questionNr);
 
         $answersRepo = new QuizAnswerRepository();
         $answers     = $answersRepo->getQuizAnswers($question['id']);
 
-        return $this->getQuestion($question, $answers, $quizId);
+        return $this->getQuestion($question, $answers);
     }
 
     public function oneQuestion($quizId, $questionNr)
@@ -48,21 +48,8 @@ class GetQuestionsService
         return $question;
     }
 
-    public function getQuestion($question, $answers, $quizId)
+    public function getQuestion($question, $answers)
     {
-//        $quizService = new QuizService();
-//        $isCompleted = $quizService->isQuizCompleted($quizId);
-
-//        if (!$isCompleted) {
-        $test = [];
-
-//        foreach ($answers as $answer) {
-//            $test[] = ['id' => $answer['id'], ['answer' => $answer['answer']]];
-//        }
-//        foreach ($answers as $answer) {
-//            $test[] = unset($answer['isCorrect']);
-//
-//        }
         $questions = [
             'id'       => $question['id'],
             'question' => $question['questions'],
@@ -71,34 +58,33 @@ class GetQuestionsService
         ];
 
         return $questions;
-//        }
-
-//        return $quizService->getScore($_SESSION['user'], $quizId);
     }
 
     public function nextQuestions($answerId, $questionNr)
     {
-        $quizId     = $_SESSION['quizId'];
-        $question   = $this->oneQuestion($quizId, $questionNr);
-        $questionId = $question['id'];
-        $userId     = $_SESSION['user'];
+        $userId          = $_SESSION['user'];
+        $questionsRepo   = new QuestionRepository;
+        $userAnswersRepo = new UserAnswerRepository;
+        $quizAnswers     = new QuizAnswerRepository;
+        $quizService     = new QuizService($questionsRepo, $userAnswersRepo, $quizAnswers);
+        $quizId          = $_SESSION['quizId'];
+        $isCompleted     = $quizService->isQuizCompleted($userId, $quizId);
 
-        $this->saveUserAnswer($answerId, $quizId, $userId, $questionId);
+        if (!$isCompleted) {
 
-        return $this->takeQuestion($quizId, $questionNr);
+            return $this->prepareQuestion($quizId, $questionNr);
+        }
+        return $quizService->getScore($userId, $quizId);
     }
 
     public function saveUserAnswer($answerId, $quizId, $userId, $questionId)
     {
-        $repo                    = new UserAnswerRepository();
-        $answerModel             = new UserAnswerModel();
+        $repo                     = new UserAnswerRepository();
+        $answerModel              = new UserAnswerModel();
         $answerModel->answer_id   = $answerId;
         $answerModel->quiz_id     = $quizId;
-        $answerModel->user_id    = $userId;
+        $answerModel->user_id     = $userId;
         $answerModel->question_id = $questionId;
-//        return $answerModel;
         $repo->saveAnswer($answerModel);
-
     }
-
 }
