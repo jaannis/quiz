@@ -16,9 +16,9 @@ interface ConnectionInterface
      * @param string $table
      * @param string $primaryKey
      * @param array $attributes
-     * @return bool
+     * @return int
      */
-    public function insert(string $table, string $primaryKey, array $attributes): bool;
+    public function insert(string $table, string $primaryKey, array $attributes): int;
 
     /**
      * @param string $table

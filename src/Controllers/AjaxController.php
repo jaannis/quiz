@@ -7,18 +7,24 @@ use Quiz\Service\GetQuestionsService;
 
 class AjaxController extends BaseAjaxController
 {
-    protected $getQuestionService;
+//    protected $getQuestionService;
 
     /**
      * AjaxController constructor.
      * @param GetQuestionsService $getQuestionService
      */
-    public function __construct(GetQuestionsService $getQuestionService)
+//    public function __construct(GetQuestionsService $getQuestionService)
+//    {
+////        if (!session_id()) {
+////            session_start();
+////        }
+//        $this->getQuestionService = $getQuestionService;
+//    }
+    public function __construct()
     {
         if (!session_id()) {
             session_start();
         }
-        $this->getQuestionService = $getQuestionService;
     }
 
     public function getQuizzesAction()
@@ -37,8 +43,10 @@ class AjaxController extends BaseAjaxController
         $questionNr             = $_SESSION['questionNr'];
         $name                   = $this->post['name'];
 
-//        $repo = new GetQuestionsService();
-        return $this->getQuestionService->startQuestion($quizId, $questionNr, $name);
+        $repo = new GetQuestionsService();
+
+        return $repo->startQuestion($quizId, $questionNr, $name);
+//        return $this->getQuestionService->startQuestion($quizId, $questionNr, $name);
 
 //        return $next;
 
@@ -52,7 +60,11 @@ class AjaxController extends BaseAjaxController
         $questionNr++;
         $_SESSION['questionNr'] = $questionNr;
 
-        return $this->getQuestionService->nextQuestions($answerId, $questionNr);
+        $repo = new GetQuestionsService();
+
+        return $repo->nextQuestions($answerId, $questionNr);
+
+//        return $this->getQuestionService->nextQuestions($answerId, $questionNr);
     }
 
 }

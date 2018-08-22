@@ -8,6 +8,8 @@ abstract class BaseModel
     public $isNew = true;
     public $attributes;
 
+
+
     public function jsonSerialize()
     {
         return $this->attributes;

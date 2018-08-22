@@ -25,14 +25,6 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->connection = new MysqlConnection();
     }
 
-//    final protected static function getConnection(): ConnectionInterface
-//    {
-//        if (!static::$connection) {
-//            static::$connection = $thisconne::getDriver();
-//        }
-//        return static::$connection;
-//    }
-
     public function getList(): array
     {
         $table = static::getTableName();
@@ -112,9 +104,9 @@ abstract class BaseRepository implements RepositoryInterface
 
     /**
      * @param BaseModel $model
-     * @return bool
+     * @return string
      */
-    public function save($model): bool
+    public function save($model)
     {
         $connection = $this->connection;
         if ($model->isNew) {
@@ -146,7 +138,9 @@ abstract class BaseRepository implements RepositoryInterface
         $columns    = $this->connection->fetchColumns(static::getTableName());
         $attributes = [];
         foreach ($columns as $column) {
-            if (property_exists(static::modelName(), $column)) {
+            $isExisting      = property_exists(static::modelName(), $column);
+            $isExistingModel = property_exists($model, $column);
+            if ($isExisting) {
                 $attributes[$column] = $model->{$column};
             }
         }

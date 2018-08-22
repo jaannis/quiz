@@ -138,12 +138,12 @@ class QuizServiceTest extends TestCase
         $service          = new QuizService($quizRepo, $userRepo, $userAnswerRepo);
         $answer           = new UserAnswerModel;
         $answer->id       = '1';
-        $answer->userId   = '123';
+        $answer->user_id  = '123';
         $answer->quizId   = '1';
         $answer->answerId = '1';
 
         $saveAnswer = $service->submitAnswer($answer);
-        $getAnswers = $userAnswerRepo->getAnswers($answer->userId, $answer->quizId);
+        $getAnswers = $userAnswerRepo->getAnswers($answer->user_id, $answer->quizId);
         $getAnswers = array_shift($getAnswers);
         self::assertEquals($saveAnswer, $getAnswers);
     }
@@ -157,7 +157,7 @@ class QuizServiceTest extends TestCase
         $service          = new QuizService($quizRepo, $userRepo, $userAnswerRepo);
         $answer           = new UserAnswerModel;
         $answer->id       = '1';
-        $answer->userId   = '123';
+        $answer->user_id  = '123';
         $answer->quizId   = '1';
         $answer->answerId = '1';
         $userAnswerRepo->saveAnswer($answer);
@@ -168,7 +168,7 @@ class QuizServiceTest extends TestCase
         $model->question = '2';
         $quizRepo->addQuestion($model);
 
-        $trueOrFalse = $service->isQuizCompleted($answer->userId, $answer->quizId);
+        $trueOrFalse = $service->isQuizCompleted($answer->user_id, $answer->quizId);
         self::assertTrue($trueOrFalse);
 
     }
@@ -182,7 +182,7 @@ class QuizServiceTest extends TestCase
         $service            = new QuizService($quizRepo, $userRepo, $userAnswerRepo);
         $answer             = new UserAnswerModel;
         $answer->id         = '1';
-        $answer->userId     = '123';
+        $answer->user_id    = '123';
         $answer->quizId     = '1';
         $answer->answerId   = '1';
         $answer->questionId = '2';
@@ -195,7 +195,7 @@ class QuizServiceTest extends TestCase
         $model->isCorrect  = 'true';
         $quizRepo->addAnswers($model);
 
-        $results = $service->getScore($answer->userId, $answer->quizId);
+        $results = $service->getScore($answer->user_id, $answer->quizId);
 //        var_dump($results);
 //        die;
 

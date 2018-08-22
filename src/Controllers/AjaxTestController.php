@@ -22,17 +22,17 @@ class AjaxTestController extends BaseAjaxController
 //        $this->userRepository = $userRepository();
     }
 
-    public function saveUserAction()
-    {
-        $name = $this->post['name'];
-        /** @var UserModel $user */
-        $user->name = $name;
-        $repo = new UserRepository();
-        $repo->saveOrCreate($user);
-//        $this->userRepository->saveOrCreate($user);
-
-        return $user;
-    }
+//    public function saveUserAction()
+//    {
+//        $name = $this->post['name'];
+//        /** @var UserModel $user */
+//        $user->name = $name;
+//        $repo = new UserRepository();
+//        $repo->saveOrCreate($user);
+////        $this->userRepository->saveOrCreate($user);
+//
+//        return $user;
+//    }
 
     public function getQuizzesAction()
     {

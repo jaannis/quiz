@@ -5,7 +5,7 @@ namespace Quiz\Models;
 class QuestionModel extends BaseModel
 {
     public $id;
-    public $quizId;
+    public $quiz_id;
     public $question;
-    public $questionNr;
+    public $question_nr;
 }

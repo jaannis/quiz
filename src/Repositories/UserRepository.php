@@ -16,11 +16,11 @@ class UserRepository extends BaseRepository
         return 'users';
     }
 
-//    public function saveOrCreate($user)
-//    {
-//        $existingUser = $this->save($user);
-//
-//        return $existingUser;
-//    }
+    public function saveUser($name)
+    {
+        $savedUser = $this->save($name);
+
+        return $savedUser;
+    }
 
 }

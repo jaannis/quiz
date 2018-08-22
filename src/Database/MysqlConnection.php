@@ -12,6 +12,7 @@ class MysqlConnection implements ConnectionInterface
      */
     protected $config;
 
+    /** @var PDO */
     protected $connection;
 
     /**
@@ -49,16 +50,13 @@ class MysqlConnection implements ConnectionInterface
      */
     public function select(string $table, array $conditions = [], array $select = []): array
     {
-
         $conditionSql = '';
-
         if ($conditions) {
             $conditionStatements = [];
             $conditionSql        = 'WHERE ';
             foreach ($conditions as $attribute => $value) {
                 $conditionStatements[] = implode(' = ', [$attribute, '?']);
             }
-
             $conditionSql .= implode(' AND ', $conditionStatements);
         }
         $select    = $this->buildSelect($select);
@@ -82,17 +80,20 @@ class MysqlConnection implements ConnectionInterface
      * @param string $table
      * @param string $primaryKey
      * @param array $attributes
-     * @return bool
+     * @return int
      */
-    public function insert(string $table, string $primaryKey, array $attributes): bool
+    public function insert(string $table, string $primaryKey, array $attributes): int
     {
         $attributes   = $this->prepareAttributes($attributes, $primaryKey);
         $attributeSql = implode(', ', array_keys($attributes));
         $valueSql     = implode(', ', array_fill(0, count($attributes), '?'));
         $sql          = "INSERT INTO $table ($attributeSql) VALUES ($valueSql)";
         $statement    = $this->connection->prepare($sql);
+        $statement->execute(array_values($attributes));
 
-        return $statement->execute(array_values($attributes));
+        $last_id = $this->connection->lastInsertId();
+
+        return $last_id;
     }
 
     private function prepareAttributes(array $attributes, string $primaryKey): array
@@ -102,7 +103,6 @@ class MysqlConnection implements ConnectionInterface
         }
 
         return $attributes;
-
     }
 
     /**
@@ -116,7 +116,6 @@ class MysqlConnection implements ConnectionInterface
         $primaryKeySql    = "$primaryKey = $attributes[$primaryKey]";
         $attributes       = $this->prepareAttributes($attributes, $primaryKey);
         $updateStatements = [];
-
         foreach ($attributes as $attribute => $value) {
             $updateStatements[] = implode(' = ', [$attribute, '?']);
         }
