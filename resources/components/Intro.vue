@@ -1,7 +1,18 @@
 <template>
 	<div v-if="!activeQuestion && !result">
-		<TextInput v-model="name" label="Your name" />
-		<SelectDropdown v-model="activeQuizId" label="Pick your quiz" :options="getQuizzes()" />
+
+		<div>
+			<label>Your name</label>
+			<input type="text" v-model="name"/>
+		</div>
+
+		<div>
+			<label>Pick your quiz</label>
+			<select v-model="activeQuizId">
+				<option v-for="quiz in allQuizzes" :value="quiz.id">{{ quiz.name }}</option>
+			</select>
+		</div>
+
 		<div>
 			<button @click="onStart">Start</button>
 		</div>
@@ -10,11 +21,8 @@
 
 <script>
     import {mapActions} from 'vuex';
-    import TextInput from './forms/input.text';
-    import SelectDropdown from "./forms/select.dropdown";
     export default {
         name: 'Intro',
-        components: {SelectDropdown, TextInput},
         computed: {
             allQuizzes: {
                 get() {
