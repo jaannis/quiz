@@ -17,6 +17,18 @@ option::value {
   margin-top: 10%;
   margin-bottom: 5%;
 }
+.label-default{
+  background-color: gainsboro;
+  width: 100%;
+}
+.form-radio {
+  display : none;
+}
+#radio{
+  display : none;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
 //
 //body {
 //  padding: 1rem;
