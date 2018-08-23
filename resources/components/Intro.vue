@@ -4,19 +4,19 @@
 		<div class="margin__needed">
 			<h1>Quiz</h1>
 		</div>
-		<div class="margin__needed">
+		<div>
 			<input class="form-control" type="text" v-model="name" placeholder="Your name"/>
 		</div>
 
 		<div class="margin__needed">
 			<select class="form-control" v-model="activeQuizId">
-				<option disabled> -- Pick your quiz --</option>
+				<option disabled :value="null"> -- Pick your quiz --</option>
 				<option v-for="quiz in allQuizzes" :value="quiz.id">{{ quiz.name }}</option>
 			</select>
 		</div>
 
-		<div>
-			<button class="btn btn-lg btn-primary btn-block"  @click="onStart">Start</button>
+		<div class="margin__needed">
+			<button class="btn btn-lg btn-primary btn-block" @click="onStart">Start</button>
 		</div>
 	</div>
 </template>
@@ -59,11 +59,7 @@
                 }
             },
         },
-        data () {
-            return {
-                activeQuizId: "-- Pick your quiz --"
-            }
-        },
+
         methods: Object.assign({}, mapActions([
             'setAllQuizzes',
             'setActiveQuizId',

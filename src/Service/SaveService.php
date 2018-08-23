@@ -2,8 +2,10 @@
 
 namespace Quiz\Service;
 
+use Quiz\Models\ResultsModel;
 use Quiz\Models\UserAnswerModel;
 use Quiz\Models\UserModel;
+use Quiz\Repositories\ResultsRepository;
 use Quiz\Repositories\UserAnswerRepository;
 use Quiz\Repositories\UserRepository;
 
@@ -47,10 +49,26 @@ class SaveService
      */
     public function saveUserModel($name)
     {
-        $repo             = new UserRepository();
-        $user             = new UserModel();
-        $user->name       = $name;
+        $repo       = new UserRepository();
+        $user       = new UserModel();
+        $user->name = $name;
+
         return $repo->saveUser($user);
+    }
+
+    /**
+     * @param $user_id
+     * @param $quiz_id
+     * @param $score
+     */
+    public function saveScore($user_id, $quiz_id, $score)
+    {
+        $repo           = new ResultsRepository();
+        $model          = new ResultsModel();
+        $model->user_id = $user_id;
+        $model->quiz_id = $quiz_id;
+        $model->score   = $score;
+        $repo->save($model);
     }
 
 }

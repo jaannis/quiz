@@ -72,6 +72,9 @@ class QuizService
             }
         }
 
+        $service = new SaveService();
+        $service->saveScore($userId, $quizId, $score);
+
         return 'Your score is '.$score;
     }
 
