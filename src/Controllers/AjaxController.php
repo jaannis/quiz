@@ -40,16 +40,21 @@ class AjaxController extends BaseAjaxController
     public function answerAction()
     {
         $answerId    = $this->post['answerId'];
-        $saveService = new SaveService();
-        $saveService->saveUserAnswer($answerId);
+        if(!$answerId == null){
+            $saveService = new SaveService();
+            $saveService->saveUserAnswer($answerId);
 
-        $questionNr = isset($_SESSION['questionNr']) ? (int)$_SESSION['questionNr'] : 0;
-        $questionNr++;
-        $_SESSION['questionNr'] = $questionNr;
+            $questionNr = isset($_SESSION['questionNr']) ? (int)$_SESSION['questionNr'] : 0;
+            $questionNr++;
+            $_SESSION['questionNr'] = $questionNr;
 
-        $repo = new GetQuestionsService();
+            $repo = new GetQuestionsService();
 
-        return $repo->nextQuestions($questionNr);
+            return $repo->nextQuestions($questionNr);
+        }
+
+        return 'Fuck you, choose one answer';
+
     }
 
 }

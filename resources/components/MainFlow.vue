@@ -1,22 +1,28 @@
 <template>
 	<div v-if="activeQuestion">
-		<div>
-			<h1>
-				{{ question.question }}
-			</h1>
+		<div class="center">
+			<div>
+				<h1>
+					{{ question.question }}
+				</h1>
+			</div>
 
-			<label v-for="answer in question.answers">
-				<input type="radio" name="radio"
-				       :answer="answer"
-				       v-model="answerId"
-				       :value="answer.id"
-				       :required = "isActive ? 'active' : ''">
-				<div class="back-end box">
-					<span>{{ answer.answer }}</span>
-				</div>
-			</label>
+			<div>
+				<label class='radio-label' v-for="answer in question.answers">
+					<input type="radio" name="radio"
+					       :answer="answer"
+					       v-model="answerId"
+					       :value="answer.id"
+					       :required="isActive ? 'active' : ''">
+					<div class="back-end box">
+						<span class='inner-label'>{{ answer.answer }}</span>
+					</div>
+				</label>
+			</div>
+			<div>
+				<button @click="onAnswered">Next Questions</button>
+			</div>
 
-			<button @click="onAnswered">Next Questions</button>
 		</div>
 	</div>
 </template>
@@ -57,7 +63,15 @@
                 get() {
                     return this.$store.state.activeQuestion;
                 }
-            }
+            },
+            answerId: {
+                get() {
+                    return this.$store.state.answerId;
+                },
+                set(newValue) {
+                    this.setActiveQuizId(newValue);
+                }
+            },
         },
         methods: Object.assign({}, mapActions([
             'answer',
@@ -68,6 +82,10 @@
                     return;
                 }
                 this.answer(this.answerId);
+                this.reset();
+            },
+            reset() {
+                this.answerId = null;
             }
         })
     }

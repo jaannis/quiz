@@ -8,5 +8,4 @@ class QuizAnswerModel extends BaseModel
     public $answer;
     public $question_id;
     public $is_correct;
-
 }
