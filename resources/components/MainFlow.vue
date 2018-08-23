@@ -11,6 +11,14 @@
 					<AnswerItem :answer="answer" :on-answered="onAnswerPicked" :is-active="answer.id === answerId"/>
 				</div>
 			</div>
+			<div class="container">
+
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuemin="0"
+					     aria-valuemax="100" :style="'width:' + activeQuestion.progressbar + '%'">
+					</div>
+				</div>
+			</div>
 
 			<div class="margin__needed">
 				<button @click="onAnswered" :disabled="!answerId">Next Questions</button>

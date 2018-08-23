@@ -10,9 +10,8 @@ input::placeholder {
   text-align: center;
 }
 
-
-option::value {
-  text-align: center;
+option {
+  height: 1000px;
 }
 
 .label-default {
@@ -30,16 +29,19 @@ button {
   padding-top: 5%;
   padding-bottom: 5%;
 }
-.margin__needed{
+
+.margin__needed {
   margin-top: 10%;
   margin-bottom: 10%;
 }
-.question__group{
+
+.question__group {
   margin: 5% 10%;
   height: 10%;
   width: 100%;
   display: table-cell;
 }
+
 //.Row
 //{
 //  display: table;

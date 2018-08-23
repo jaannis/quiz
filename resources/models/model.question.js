@@ -19,6 +19,11 @@ export default class Question {
          * @type {Array}
          */
         this.answers = [];
+        /**
+         *
+         * @type {number}
+         */
+        this.progressbar = 0;
 
     }
 
@@ -28,6 +33,7 @@ export default class Question {
         questions.id = rawData.id;
         questions.quizId = rawData.quizId;
         questions.question = rawData.question;
+        questions.progressbar = rawData.progressbar;
         questions.answers = rawData.answers.map(QuizAnswer.fromArray);
 
 

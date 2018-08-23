@@ -66,10 +66,12 @@ class GetQuestionsService
      */
     public function sendQuestionToFront($question, $answers)
     {
-        $questions = [
-            'id'       => $question['id'],
-            'question' => $question['questions'],
-            'answers'  => $answers,
+        $progressbar = $this->GetQuestionsCount();
+        $questions   = [
+            'id'          => $question['id'],
+            'question'    => $question['questions'],
+            'answers'     => $answers,
+            'progressbar' => $progressbar,
         ];
 
         return $questions;
@@ -95,6 +97,17 @@ class GetQuestionsService
         }
 
         return $quizService->getScore($userId, $quizId);
+    }
+
+    public function GetQuestionsCount()
+    {
+        $quizId             = $_SESSION['quizId'];
+        $repo               = new QuestionRepository();
+        $questionsCount     = count($repo->getAllQuestion($quizId));
+        $completedQuestions = $_SESSION['questionNr'] - 1;
+
+        return $completedQuestions / $questionsCount * 100;
+
     }
 
 }
