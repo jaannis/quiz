@@ -4,6 +4,9 @@ namespace Quiz\Controllers;
 
 abstract class BaseAjaxController extends BaseController
 {
+    /**
+     * @param $action
+     */
     public function callAction($action)
     {
         $content = static::$action();

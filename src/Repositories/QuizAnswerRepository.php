@@ -6,17 +6,27 @@ use Quiz\Models\QuizAnswerModel;
 
 class QuizAnswerRepository extends BaseRepository
 {
+    /**
+     * @return string
+     */
     public static function modelName(): string
 
     {
         return QuizAnswerModel::class;
     }
 
+    /**
+     * @return string
+     */
     public static function getTableName(): string
     {
         return 'answers';
     }
 
+    /**
+     * @param int $questionId
+     * @return array
+     */
     public function getQuizAnswers(int $questionId): array
     {
         $table = static::getTableName();
@@ -25,6 +35,10 @@ class QuizAnswerRepository extends BaseRepository
         return $this->getQuizAnswersWithoutShowingCorrect($data);
     }
 
+    /**
+     * @param $questions
+     * @return array
+     */
     public function getQuizAnswersWithoutShowingCorrect($questions): array
     {
         $data = [];
@@ -39,6 +53,10 @@ class QuizAnswerRepository extends BaseRepository
         return $data;
     }
 
+    /**
+     * @param QuizAnswerModel $quizAnswer
+     * @return string
+     */
     public function addAnswer(QuizAnswerModel $quizAnswer)
     {
         return $this->save($quizAnswer);

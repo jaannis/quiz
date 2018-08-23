@@ -1,17 +1,18 @@
 <template>
 	<div v-if="activeQuestion" class="text-center">
 		<div>
-			<div>
+			<div class="margin__needed">
 				<h1>
 					{{ question.question }}
 				</h1>
 			</div>
-
-			<div v-for="answer in question.answers">
-				<AnswerItem :answer="answer" :on-answered="onAnswerPicked" :is-active="answer.id === answerId"/>
+			<div class="row">
+				<div v-for="answer in question.answers" class="question__group">
+					<AnswerItem :answer="answer" :on-answered="onAnswerPicked" :is-active="answer.id === answerId"/>
+				</div>
 			</div>
 
-			<div>
+			<div class="margin__needed">
 				<button @click="onAnswered" :disabled="!answerId">Next Questions</button>
 			</div>
 
@@ -32,18 +33,6 @@
                 answerId: null,
             }
         },
-        props: {
-            answer: {
-                type: QuizAnswer,
-                required: true,
-            },
-            isActive: Boolean,
-            onAnswered: {
-                type: Function,
-                required: true,
-            },
-
-        },
 
         computed: {
 
@@ -51,21 +40,26 @@
                 get() {
                     return this.$store.state.activeQuestion;
                 }
-            },
+            }
+            ,
             question: {
                 get() {
                     return this.$store.state.activeQuestion;
                 }
-            },
+            }
+            ,
             answerId: {
                 get() {
                     return this.$store.state.answerId;
-                },
+                }
+                ,
                 set(newValue) {
                     this.setActiveQuizId(newValue);
                 }
-            },
-        },
+            }
+            ,
+        }
+        ,
         methods: Object.assign({}, mapActions([
             'answer',
         ]), {
@@ -80,9 +74,7 @@
             reset() {
                 this.answerId = null;
             },
-            onClick() {
-                this.onAnswered(this.answer.id);
-            },
+
             onAnswerPicked(answerId) {
                 this.answerId = answerId;
             },

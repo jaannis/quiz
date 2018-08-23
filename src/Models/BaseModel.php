@@ -8,20 +8,9 @@ abstract class BaseModel
     public $isNew = true;
     public $attributes;
 
-
-
     public function jsonSerialize()
     {
         return $this->attributes;
     }
-
-//    public function setAttributes(array $attributes = [])
-//    {
-//        foreach ($attributes as $key => $value) {
-//            if (property_exists(static::class, $key)) {
-//                $this->$key = $value;
-//            }
-//        }
-//    }
 
 }

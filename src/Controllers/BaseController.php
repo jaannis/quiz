@@ -8,6 +8,9 @@ abstract class BaseController
     protected $get;
     protected $action;
 
+    /**
+     * @param string $action
+     */
     public function handleCall(string $action)
     {
         $this->action = $action;
@@ -16,6 +19,10 @@ abstract class BaseController
         $this->callAction($action);
     }
 
+    /**
+     * @param array $params
+     * @return array
+     */
     protected function prepareParams(array $params)
     {
         foreach ($params as $key => $value) {
@@ -24,11 +31,19 @@ abstract class BaseController
         return $params;
     }
 
+    /**
+     * @param $action
+     */
     protected function callAction($action)
     {
         echo static::$action();
     }
 
+    /**
+     * @param string $view
+     * @param array $variables
+     * @return string
+     */
     protected function render(string $view, array $variables = []): string
     {
         $viewFile = $this->resolveViewFile($view);
@@ -44,6 +59,10 @@ abstract class BaseController
         return 'View not found';
     }
 
+    /**
+     * @param string $view
+     * @return string
+     */
     protected function resolveViewFile(string $view): string
     {
         return VIEW_DIR."/$view.phtml";

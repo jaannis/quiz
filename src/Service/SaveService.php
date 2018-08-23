@@ -9,6 +9,9 @@ use Quiz\Repositories\UserRepository;
 
 class SaveService
 {
+    /**
+     * @param $answerId
+     */
     public function saveUserAnswer($answerId)
     {
         $service    = new GetQuestionsService();
@@ -21,6 +24,12 @@ class SaveService
         $this->saveAnswerModel($answerId, $quizId, $userId, $questionId);
     }
 
+    /**
+     * @param $answerId
+     * @param $quizId
+     * @param $userId
+     * @param $questionId
+     */
     public function saveAnswerModel($answerId, $quizId, $userId, $questionId)
     {
         $repo                     = new UserAnswerRepository();
@@ -32,6 +41,10 @@ class SaveService
         $repo->saveAnswer($answerModel);
     }
 
+    /**
+     * @param $name
+     * @return string
+     */
     public function saveUserModel($name)
     {
         $repo             = new UserRepository();

@@ -10,6 +10,4 @@ class UserAnswerModel extends BaseModel
     public $answer_id;
     public $question_id;
 
-
-
 }

@@ -1,22 +1,22 @@
 <template>
 	<div v-if="!activeQuestion && !result" class="text-center">
 
-		<div>
+		<div class="margin__needed">
 			<h1>Quiz</h1>
 		</div>
-		<div>
+		<div class="margin__needed">
 			<input class="form-control" type="text" v-model="name" placeholder="Your name"/>
 		</div>
 
-		<div>
+		<div class="margin__needed">
 			<select class="form-control" v-model="activeQuizId">
-				<option disabled selected value> -- Pick your quiz --</option>
+				<option disabled> -- Pick your quiz --</option>
 				<option v-for="quiz in allQuizzes" :value="quiz.id">{{ quiz.name }}</option>
 			</select>
 		</div>
 
 		<div>
-			<button class="btn btn-lg btn-primary btn-block" @click="onStart">Start</button>
+			<button class="btn btn-lg btn-primary btn-block"  @click="onStart">Start</button>
 		</div>
 	</div>
 </template>
@@ -58,6 +58,11 @@
                     this.setName(newName);
                 }
             },
+        },
+        data () {
+            return {
+                activeQuizId: "-- Pick your quiz --"
+            }
         },
         methods: Object.assign({}, mapActions([
             'setAllQuizzes',

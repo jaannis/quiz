@@ -1,6 +1,6 @@
 <template>
 	<label :class="(isActive ? baseClass + ' active' : baseClass)">
-		<input id="radio" type="radio" name="select" @click="onAnswerClicked">
+		<input class="radio" type="radio" name="select" @click="onAnswerClicked">
 		<span>{{ answer.answer }}</span>
 	</label>
 </template>

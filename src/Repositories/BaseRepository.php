@@ -20,11 +20,17 @@ abstract class BaseRepository implements RepositoryInterface
         $this->connect();
     }
 
+    /**
+     * @return MysqlConnection
+     */
     public function connect()
     {
         return $this->connection = new MysqlConnection();
     }
 
+    /**
+     * @return array
+     */
     public function getList(): array
     {
         $table = static::getTableName();
@@ -34,6 +40,10 @@ abstract class BaseRepository implements RepositoryInterface
 
     }
 
+    /**
+     * @param array $conditions
+     * @return array
+     */
     public function all(array $conditions = []): array
     {
         $dataArray = $this->connection->select(static::getTableName(), $conditions);
@@ -45,6 +55,9 @@ abstract class BaseRepository implements RepositoryInterface
         return $instances;
     }
 
+    /**
+     * @return string
+     */
     public static function getPrimaryKey(): string
     {
         return 'id';

@@ -8,6 +8,7 @@ use Quiz\Repositories\UserAnswerRepository;
 
 class GetQuestionsService
 {
+
     public function __construct()
     {
         if (!session_id()) {
@@ -15,6 +16,12 @@ class GetQuestionsService
         }
     }
 
+    /**
+     * @param $quizId
+     * @param $questionNr
+     * @param $name
+     * @return array
+     */
     public function startQuestion($quizId, $questionNr, $name)
     {
         $saveService      = new SaveService();
@@ -23,6 +30,11 @@ class GetQuestionsService
         return $this->prepareQuestion($quizId, $questionNr);
     }
 
+    /**
+     * @param $quizId
+     * @param $questionNr
+     * @return array
+     */
     public function prepareQuestion($quizId, $questionNr)
     {
         $question = $this->oneQuestion($quizId, $questionNr);
@@ -33,6 +45,11 @@ class GetQuestionsService
         return $this->sendQuestionToFront($question, $answers);
     }
 
+    /**
+     * @param $quizId
+     * @param $questionNr
+     * @return mixed
+     */
     public function oneQuestion($quizId, $questionNr)
     {
         $questionRepo  = new QuestionRepository();
@@ -42,6 +59,11 @@ class GetQuestionsService
         return $question;
     }
 
+    /**
+     * @param $question
+     * @param $answers
+     * @return array
+     */
     public function sendQuestionToFront($question, $answers)
     {
         $questions = [
@@ -53,6 +75,10 @@ class GetQuestionsService
         return $questions;
     }
 
+    /**
+     * @param $questionNr
+     * @return array|string
+     */
     public function nextQuestions($questionNr)
     {
         $userId          = $_SESSION['user'];

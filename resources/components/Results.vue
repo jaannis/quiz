@@ -1,6 +1,6 @@
 <template>
 	<div v-if="result" class="text-center">
-		<div>
+		<div class="margin__needed">
 			<h1>
 				Thanks {{name}}!
 			</h1>
@@ -9,7 +9,7 @@
 			</h2>
 		</div>
 
-		<div>
+		<div class="margin__needed">
 			<button class="btn btn-lg btn-primary btn-block" @click="restart">Start again</button>
 		</div>
 	</div>
