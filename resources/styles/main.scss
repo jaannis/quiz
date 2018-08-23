@@ -1,103 +1,91 @@
-//@import "compass/css3";
-//
-//@import url(https://fonts.googleapis.com/css?family=Lato:300,400,900);
-//
-//$dark: #292929;
-//$light: #efefef;
-//$red: #D91E18;
-//$green: #2ECC71;
-//$blue: #4183D7;
-//$font-stack: "Lato", sans-serif;
-//$small: 40em;
-//
-//* {
-//  box-sizing: border-box;
-//}
-//
-//html, body {
-//  height: 100%;
-//}
-//
-//html {
-//  background: #444;
-//}
+.container {
+  width: 60%;
+  margin: 0 auto;
+  overflow: auto;
+  padding-top: 5%;
+  padding-bottom: 10px;
+}
+
+input::placeholder{
+  text-align: center;
+}
+option::value {
+  text-align: center;
+}
+
+.form-control{
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
 //
 //body {
-//  min-height: 100%;
-//  overflow: hidden;
+//  padding: 1rem;
+//  color: hsla(215, 5%, 50%, 1);
 //}
-//
-//.container {
-//  height: 100%;
-//  min-height: 100%;
-//  margin: 0 auto;
+//h1 {
+//  color: hsla(215, 5%, 10%, 1);
+//  margin-bottom: 2rem;
 //}
-//
-//.button-wrap {
-//  position: relative;
-//  text-align: center;
-//  top: 50%;
-//  margin-top: -2.5em;
-//  @media (max-width: $small) {margin-top: -1.5em;}
+//section {
+//  display: flex;
+//  flex-flow: row wrap;
 //}
-//
-//.button-label {
-//  display: inline-block;
-//  padding: 1em 2em;
-//  margin: 0.5em;
-//  cursor: pointer;
-//  color: $dark;
-//  border-radius: 0.25em;
-//  background: $light;
-//  box-shadow: 0 3px 10px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.22);
-//  transition: 0.3s;
-//  user-select: none;
-//  h1 {
-//    font-size: 1em;
-//    font-family: $font-stack;
-//  }
-//  &:hover {
-//    background: darken($light, 10%);
-//    color: darken($dark, 10%);
-//    box-shadow: 0 3px 10px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.32);
-//  }
-//  &:active {
-//    transform: translateY(2px);
-//    box-shadow: 0 3px 10px rgba(0,0,0,0.2), inset 0px -1px 0 rgba(0,0,0,0.22);
-//  }
-//  @media (max-width: $small) {
-//    padding: 0em 1em 3px;
-//    margin: 0.25em;
-//  }
+//section > div {
+//  flex: 1;
+//  padding: 0.5rem;
 //}
-//
-//#yes-button:checked + .button-label {
-//  background: $green;
-//  color: $light;
-//  &:hover {
-//    background: darken($green, 5%);
-//    color: darken($light, 5%);
-//  }
-//}
-//
-//#no-button:checked + .button-label {
-//  background: $red;
-//  color: $light;
-//  &:hover {
-//    background: darken($red, 5%);
-//    color: darken($light, 5%);
-//  }
-//}
-//
-//#maybe-button:checked + .button-label {
-//  background: $blue;
-//  color: $light;
-//  &:hover {
-//    background: darken($blue, 5%);
-//    color: darken($light, 5%);
-//  }
-//}
-//
-//.hidden {
+//input[type="radio"] {
 //  display: none;
+//  &:not(:disabled) ~ label {
+//    cursor: pointer;
+//  }
+//  &:disabled ~ label {
+//    color: hsla(150, 5%, 75%, 1);
+//    border-color: hsla(150, 5%, 75%, 1);
+//    box-shadow: none;
+//    cursor: not-allowed;
+//  }
+//}
+//label {
+//  height: 100%;
+//  display: block;
+//  background: white;
+//  border: 2px solid hsla(150, 75%, 50%, 1);
+//  border-radius: 20px;
+//  padding: 1rem;
+//  margin-bottom: 1rem;
+//  //margin: 1rem;
+//  text-align: center;
+//  box-shadow: 0px 3px 10px -2px hsla(150, 5%, 65%, 0.5);
+//  position: relative;
+//}
+//input[type="radio"]:active + label {
+//  background: hsla(150, 75%, 50%, 1);
+//  color: hsla(215, 0%, 100%, 1);
+//  box-shadow: 0px 0px 20px hsla(150, 100%, 50%, 0.75);
+//  &::after {
+//    color: hsla(215, 5%, 25%, 1);
+//    border: 2px solid hsla(150, 75%, 45%, 1);
+//    content: "\f00c";
+//    font-size: 24px;
+//    position: absolute;
+//    top: -25px;
+//    left: 50%;
+//    transform: translateX(-50%);
+//    height: 50px;
+//    width: 50px;
+//    line-height: 50px;
+//    text-align: center;
+//    border-radius: 50%;
+//    background: white;
+//    box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+//  }
+//}
+//
+//
+//
+//@media only screen and (max-width: 700px) {
+//  section {
+//    flex-direction: column;
+//  }
 //}

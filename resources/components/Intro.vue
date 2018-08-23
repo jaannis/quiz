@@ -1,26 +1,29 @@
 <template>
-	<div v-if="!activeQuestion && !result">
+	<div v-if="!activeQuestion && !result" class="text-center">
 
 		<div>
-			<label>Your name</label>
-			<input type="text" v-model="name"/>
+			<h1>Quiz</h1>
+		</div>
+		<div>
+			<input class="form-control" type="text" v-model="name" placeholder="Your name"/>
 		</div>
 
 		<div>
-			<label>Pick your quiz</label>
-			<select v-model="activeQuizId">
+			<select class="form-control" v-model="activeQuizId">
+				<option disabled selected value> -- Pick your quiz --</option>
 				<option v-for="quiz in allQuizzes" :value="quiz.id">{{ quiz.name }}</option>
 			</select>
 		</div>
 
 		<div>
-			<button @click="onStart">Start</button>
+			<button class="btn btn-lg btn-primary btn-block" @click="onStart">Start</button>
 		</div>
 	</div>
 </template>
 
 <script>
     import {mapActions} from 'vuex';
+
     export default {
         name: 'Intro',
         computed: {

@@ -1,24 +1,34 @@
 <template>
-	<div v-if="activeQuestion">
-		<div class="center">
+	<div v-if="activeQuestion" class="text-center">
+		<div>
 			<div>
 				<h1>
 					{{ question.question }}
 				</h1>
 			</div>
+			<!--:class="isActive ? 'checked' : ''"-->
 
 			<div>
-				<label class='radio-label' v-for="answer in question.answers">
-					<input type="radio" name="radio"
+				<label v-for="answer in question.answers">
+					<input type="radio" name="select" class="btn btn-secondary btn-lg"
 					       :answer="answer"
 					       v-model="answerId"
 					       :value="answer.id"
-					       :required="isActive ? 'active' : ''">
-					<div class="back-end box">
-						<span class='inner-label'>{{ answer.answer }}</span>
-					</div>
+					:class="[isActive ? 'active' : '']"
+
+					>
+					<span>{{ answer.answer }}</span>
 				</label>
+				{{ answer.isActive }}
 			</div>
+			<!--<div>-->
+			<!--<input type="radio" id="control_03" name="select" value="3">-->
+			<!--<label for="control_03">-->
+			<!--<h2>Daaamn</h2>-->
+			<!--<p>Now we're talking. It's gettin' a bit hairy out there in game land.</p>-->
+			<!--</label>-->
+			<!--</div>-->
+
 			<div>
 				<button @click="onAnswered">Next Questions</button>
 			</div>
@@ -86,7 +96,8 @@
             },
             reset() {
                 this.answerId = null;
-            }
+            },
+
         })
     }
 </script>
